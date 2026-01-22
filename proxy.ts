@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from 'next/server'
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   
-  console.log(`🔒 Verificando acceso a: ${pathname}`)
-
   // Rutas protegidas
   const protectedRoutes = ['/admin', '/user']
   
@@ -16,7 +14,6 @@ export function middleware(request: NextRequest) {
     const sessionCookie = request.cookies.get('bus-reservation-session')
     
     if (!sessionCookie) {
-      console.log('❌ No hay sesión, redirigiendo a login')
       const loginUrl = new URL('/login', request.url)
       return NextResponse.redirect(loginUrl)
     }
@@ -28,13 +25,11 @@ export function middleware(request: NextRequest) {
       if (pathname.startsWith('/admin')) {
         const allowedRoles = ['admin', 'bishop', 'quorum_president', 'stake_presidency']
         if (!allowedRoles.includes(sessionData.role)) {
-          console.log(`🚫 Rol no autorizado: ${sessionData.role}`)
           return NextResponse.redirect(new URL('/user', request.url))
         }
       }
       
     } catch (error) {
-      console.error('❌ Error parseando cookie:', error)
       return NextResponse.redirect(new URL('/login', request.url))
     }
   }
