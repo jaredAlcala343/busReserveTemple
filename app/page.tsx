@@ -1,9 +1,22 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Bus, Users, Shield, Clock, MapPin, CheckCircle, ArrowRight } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import { 
+  FaBus, 
+  FaUsers, 
+  FaShieldAlt, 
+  FaClock, 
+  FaMapMarkerAlt,
+  FaCheckCircle,
+  FaArrowRight,
+  FaHome,
+  FaCar,
+  FaChair,
+  FaUserTie,
+  FaUserShield
+} from 'react-icons/fa'
 
 export default function HomePage() {
   const [availableSeats, setAvailableSeats] = useState(0)
@@ -40,22 +53,22 @@ export default function HomePage() {
 
   const features = [
     {
-      icon: <Bus className="w-8 h-8" />,
+      icon: <FaBus className="w-8 h-8" />,
       title: "Reserva en Tiempo Real",
       description: "Selecciona tu asiento al instante con nuestro mapa interactivo"
     },
     {
-      icon: <Shield className="w-8 h-8" />,
+      icon: <FaShieldAlt className="w-8 h-8" />,
       title: "Sistema Seguro",
       description: "Autenticación por roles y confirmación de líderes"
     },
     {
-      icon: <Users className="w-8 h-8" />,
+      icon: <FaUsers className="w-8 h-8" />,
       title: "Gestión por Barrios",
       description: "Los líderes pueden ver y confirmar las reservas de su unidad"
     },
     {
-      icon: <Clock className="w-8 h-8" />,
+      icon: <FaClock className="w-8 h-8" />,
       title: "Notificaciones Instantáneas",
       description: "Alertas automáticas a obispos y presidentes de quórum"
     }
@@ -107,7 +120,7 @@ export default function HomePage() {
                     className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center space-x-2"
                   >
                     <span>Reservar Mi Asiento</span>
-                    <ArrowRight className="w-5 h-5" />
+                    <FaArrowRight className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => router.push('/login')}
@@ -121,7 +134,7 @@ export default function HomePage() {
                 <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-8 shadow-2xl transform rotate-3">
                   <div className="bg-white rounded-xl p-6 transform -rotate-3 shadow-lg">
                     <div className="text-center mb-6">
-                      <Bus className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+                      <FaBus className="w-16 h-16 text-blue-600 mx-auto mb-4" />
                       <h3 className="text-2xl font-bold text-gray-800">Estadísticas en Vivo</h3>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -136,7 +149,7 @@ export default function HomePage() {
                     </div>
                     <div className="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
                       <p className="text-sm text-yellow-800">
-                        <CheckCircle className="w-4 h-4 inline mr-2" />
+                        <FaCheckCircle className="w-4 h-4 inline mr-2" />
                         Sistema activo y funcionando
                       </p>
                     </div>
@@ -191,7 +204,7 @@ export default function HomePage() {
                 </div>
                 {index < steps.length - 1 && (
                   <div className="hidden lg:block absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2">
-                    <ArrowRight className="w-8 h-8 text-white" />
+                    <FaArrowRight className="w-8 h-8 text-white" />
                   </div>
                 )}
               </div>
@@ -243,7 +256,7 @@ export default function HomePage() {
                 <ul className="space-y-2">
                   {role.permissions.map((permission, idx) => (
                     <li key={idx} className="flex items-center text-sm text-gray-700">
-                      <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                      <FaCheckCircle className="w-4 h-4 text-green-500 mr-2" />
                       {permission}
                     </li>
                   ))}
@@ -292,7 +305,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center mb-4">
-                <Bus className="w-8 h-8 text-blue-400 mr-2" />
+                <FaBus className="w-8 h-8 text-blue-400 mr-2" />
                 <span className="text-xl font-bold">BusReserve</span>
               </div>
               <p className="text-gray-400">

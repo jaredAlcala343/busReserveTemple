@@ -3,7 +3,15 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
-import { Bus, Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react'
+import { 
+  FaBus, 
+  FaLock, 
+  FaUser, 
+  FaEye, 
+  FaEyeSlash, 
+  FaExclamationTriangle,
+  FaSignInAlt 
+} from 'react-icons/fa'
 
 // Función para guardar en cookies
 const setSessionCookie = (sessionData: any, days = 7) => {
@@ -143,7 +151,7 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="text-center mb-6">
             <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-full mb-3">
-              <Bus className="w-6 h-6 text-white" />
+              <FaBus className="w-6 h-6 text-white" />
             </div>
             <h1 className="text-xl font-bold text-gray-800">BusReserve</h1>
             <p className="text-gray-600 text-sm">Sistema de Reservas</p>
@@ -154,7 +162,7 @@ export default function LoginPage() {
             {error && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
                 <div className="flex items-center">
-                  <AlertCircle className="w-4 h-4 text-red-500 mr-2 flex-shrink-0" />
+                  <FaExclamationTriangle className="w-4 h-4 text-red-500 mr-2 flex-shrink-0" />
                   <div className="text-red-700 text-sm">{error}</div>
                 </div>
               </div>
@@ -195,9 +203,9 @@ export default function LoginPage() {
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
                   {showPassword ? (
-                    <EyeOff className="w-4 h-4" />
+                    <FaEyeSlash className="w-4 h-4" />
                   ) : (
-                    <Eye className="w-4 h-4" />
+                    <FaEye className="w-4 h-4" />
                   )}
                 </button>
               </div>
@@ -209,13 +217,23 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-2 rounded-lg font-medium text-white ${
+              className={`w-full py-2 rounded-lg font-medium text-white flex items-center justify-center ${
                 loading
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-blue-600 hover:bg-blue-700'
               }`}
             >
-              {loading ? 'Verificando...' : 'Iniciar Sesión'}
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Verificando...
+                </>
+              ) : (
+                <>
+                  <FaSignInAlt className="w-4 h-4 mr-2" />
+                  Iniciar Sesión
+                </>
+              )}
             </button>
           </form>
 
@@ -229,12 +247,18 @@ export default function LoginPage() {
                 <button
                   key={index}
                   onClick={() => handleDemoLogin(cred.email, cred.password)}
-                  className="w-full p-2 text-left bg-gray-50 hover:bg-gray-100 rounded border border-gray-200 text-sm"
+                  className="w-full p-2 text-left bg-gray-50 hover:bg-gray-100 rounded border border-gray-200 text-sm transition-colors"
                   disabled={loading}
                 >
-                  <div className="font-medium text-gray-800">{cred.role}</div>
-                  <div className="text-gray-600 text-xs">Email: {cred.email}</div>
-                  <div className="text-gray-500 text-xs">Pass: {cred.password}</div>
+                  <div className="font-medium text-gray-800 flex items-center">
+                    <FaUser className="w-3 h-3 mr-2 text-blue-600" />
+                    {cred.role}
+                  </div>
+                  <div className="text-gray-600 text-xs mt-1">Email: {cred.email}</div>
+                  <div className="text-gray-500 text-xs mt-1 flex items-center">
+                    <FaLock className="w-3 h-3 mr-1" />
+                    Pass: {cred.password}
+                  </div>
                 </button>
               ))}
             </div>
@@ -246,8 +270,9 @@ export default function LoginPage() {
               <p>Si hay problemas, prueba:</p>
               <button
                 onClick={handleResetPasswords}
-                className="mt-1 text-blue-600 hover:text-blue-800 underline"
+                className="mt-1 text-blue-600 hover:text-blue-800 underline flex items-center"
               >
+                <FaExclamationTriangle className="w-3 h-3 mr-1" />
                 Resetear contraseñas a "password123"
               </button>
             </div>

@@ -1,23 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// Exporta como "proxy" no "middleware"
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   
-  console.log(`🔒 Verificando acceso a: ${pathname}`)
+  console.log(`🔒 Proxy: Ruta ${pathname}`)
 
-  // Rutas protegidas
-  const protectedRoutes = ['/admin', '/user']
-  
-  // Verificar si es una ruta protegida
-  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
-  
-  if (isProtectedRoute) {
+  // SOLO proteger /admin (no /user)
+  if (pathname.startsWith('/admin')) {
     // Buscar sesión en cookies
     const sessionCookie = request.cookies.get('bus-reservation-session')
     
     if (!sessionCookie) {
-      console.log('❌ No hay sesión, redirigiendo a login')
+      console.log('❌ No hay sesión para /admin, redirigiendo a login')
       const loginUrl = new URL('/login', request.url)
       return NextResponse.redirect(loginUrl)
     }
@@ -26,12 +20,10 @@ export function proxy(request: NextRequest) {
       const sessionData = JSON.parse(sessionCookie.value)
       
       // Verificar roles para /admin
-      if (pathname.startsWith('/admin')) {
-        const allowedRoles = ['admin', 'bishop', 'quorum_president', 'stake_presidency']
-        if (!allowedRoles.includes(sessionData.role)) {
-          console.log(`🚫 Rol no autorizado: ${sessionData.role}`)
-          return NextResponse.redirect(new URL('/user', request.url))
-        }
+      const allowedRoles = ['admin', 'bishop', 'quorum_president', 'stake_presidency']
+      if (!allowedRoles.includes(sessionData.role)) {
+        console.log(`🚫 Rol no autorizado para /admin: ${sessionData.role}`)
+        return NextResponse.redirect(new URL('/user', request.url))
       }
       
     } catch (error) {
@@ -40,7 +32,7 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  // Si ya está logueado y va a /login, redirigir
+  // Si ya está logueado y va a /login, redirigir según rol
   if (pathname === '/login') {
     const sessionCookie = request.cookies.get('bus-reservation-session')
     if (sessionCookie) {
@@ -60,12 +52,13 @@ export function proxy(request: NextRequest) {
   return NextResponse.next()
 }
 
-// También puedes exportar como default
+// Export también como default para compatibilidad
 export default proxy
 
-// Configuración para rutas protegidas
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    // Solo aplica a /admin y /login (no a /user)
+    '/admin/:path*',
+    '/login',
   ],
 }

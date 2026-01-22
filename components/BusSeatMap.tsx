@@ -2,7 +2,18 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import { Check, X, User, AlertCircle } from 'lucide-react'
+import { 
+  FaCheck, 
+  FaTimes, 
+  FaUser, 
+  FaExclamationTriangle,
+  FaBus,
+  FaChair,
+  FaDoorOpen,
+  FaCar,
+  FaMapMarkerAlt,
+  FaInfoCircle
+} from 'react-icons/fa'
 
 interface Seat {
   id: number
@@ -127,11 +138,11 @@ export default function BusSeatMap({
       case 'available': 
         return null
       case 'reserved': 
-        return <User className="w-3 h-3 absolute -top-1 -right-1 bg-yellow-500 text-white rounded-full p-0.5" />
+        return <FaUser className="w-3 h-3 absolute -top-1 -right-1 bg-yellow-500 text-white rounded-full p-0.5" />
       case 'paid': 
-        return <Check className="w-3 h-3 absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5" />
+        return <FaCheck className="w-3 h-3 absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5" />
       case 'maintenance':
-        return <X className="w-3 h-3 absolute -top-1 -right-1 bg-gray-500 text-white rounded-full p-0.5" />
+        return <FaTimes className="w-3 h-3 absolute -top-1 -right-1 bg-gray-500 text-white rounded-full p-0.5" />
       default: 
         return null
     }
@@ -282,14 +293,15 @@ export default function BusSeatMap({
     return (
       <div className="bg-red-50 border border-red-200 rounded-lg p-6">
         <div className="flex items-center mb-4">
-          <AlertCircle className="w-6 h-6 text-red-500 mr-2" />
+          <FaExclamationTriangle className="w-6 h-6 text-red-500 mr-2" />
           <h3 className="text-lg font-semibold text-red-800">Error al cargar los asientos</h3>
         </div>
         <p className="text-red-700 mb-4">{error}</p>
         <button
           onClick={loadSeats}
-          className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
+          className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors flex items-center"
         >
+          <FaExclamationTriangle className="w-4 h-4 mr-2" />
           Reintentar
         </button>
       </div>
@@ -309,22 +321,29 @@ export default function BusSeatMap({
     <div className="p-6 bg-white rounded-xl shadow-lg">
       {/* Encabezado */}
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Mapa de Asientos del Autobús</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2 flex items-center justify-center">
+          <FaBus className="w-6 h-6 mr-2 text-blue-600" />
+          Mapa de Asientos del Autobús
+        </h2>
         <p className="text-gray-600 mb-4">Capacidad: {stats.total} pasajeros • Disposición: 10 filas × 5 asientos</p>
         
         {/* Estadísticas rápidas */}
         <div className="flex flex-wrap justify-center gap-4 mb-4">
-          <div className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+          <div className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm flex items-center">
+            <FaChair className="w-3 h-3 mr-1" />
             {stats.available} Disponibles
           </div>
-          <div className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
+          <div className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm flex items-center">
+            <FaUser className="w-3 h-3 mr-1" />
             {stats.reserved} Reservados
           </div>
-          <div className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">
+          <div className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm flex items-center">
+            <FaCheck className="w-3 h-3 mr-1" />
             {stats.paid} Pagados
           </div>
           {stats.maintenance > 0 && (
-            <div className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">
+            <div className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm flex items-center">
+              <FaTimes className="w-3 h-3 mr-1" />
               {stats.maintenance} Mantenimiento
             </div>
           )}
@@ -333,10 +352,13 @@ export default function BusSeatMap({
 
       {/* Leyenda completa */}
       <div className="mb-8 p-4 bg-gray-50 rounded-lg">
-        <h3 className="font-semibold text-gray-700 mb-3">Leyenda</h3>
+        <h3 className="font-semibold text-gray-700 mb-3 flex items-center">
+          <FaInfoCircle className="w-4 h-4 mr-2 text-blue-600" />
+          Leyenda
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-green-100 border-2 border-green-500 rounded-lg flex items-center justify-center mr-3">
+            <div className="w-8 h-8 bg-green-100 border-2 border-green-500 rounded-lg flex items-center justify-center mr-3 relative">
               <span className="font-bold">1</span>
             </div>
             <div>
@@ -345,9 +367,9 @@ export default function BusSeatMap({
             </div>
           </div>
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-yellow-100 border-2 border-yellow-500 rounded-lg flex items-center justify-center mr-3">
+            <div className="w-8 h-8 bg-yellow-100 border-2 border-yellow-500 rounded-lg flex items-center justify-center mr-3 relative">
               <span className="font-bold">2</span>
-              <User className="w-3 h-3 absolute -top-1 -right-1 bg-yellow-500 text-white rounded-full p-0.5" />
+              <FaUser className="w-3 h-3 absolute -top-1 -right-1 bg-yellow-500 text-white rounded-full p-0.5" />
             </div>
             <div>
               <div className="font-medium">Reservado</div>
@@ -355,9 +377,9 @@ export default function BusSeatMap({
             </div>
           </div>
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-red-100 border-2 border-red-500 rounded-lg flex items-center justify-center mr-3">
+            <div className="w-8 h-8 bg-red-100 border-2 border-red-500 rounded-lg flex items-center justify-center mr-3 relative">
               <span className="font-bold">3</span>
-              <Check className="w-3 h-3 absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5" />
+              <FaCheck className="w-3 h-3 absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5" />
             </div>
             <div>
               <div className="font-medium">Pagado</div>
@@ -389,8 +411,9 @@ export default function BusSeatMap({
                 </div>
               </div>
             </div>
-            <div className="text-center mt-2 text-sm text-gray-600 font-semibold">
-              🚌 FRONTAL • ASIENTO DEL CONDUCTOR
+            <div className="text-center mt-2 text-sm text-gray-600 font-semibold flex items-center justify-center">
+              <FaCar className="w-4 h-4 mr-2" />
+              FRONTAL • ASIENTO DEL CONDUCTOR
             </div>
           </div>
         </div>
@@ -413,10 +436,14 @@ export default function BusSeatMap({
         <div className="flex justify-center mt-8">
           <div className="relative">
             <div className="w-64 h-12 bg-blue-700 rounded-lg flex items-center justify-center">
-              <div className="text-white font-bold text-lg">SALIDA DE EMERGENCIA</div>
+              <div className="text-white font-bold text-lg flex items-center">
+                <FaDoorOpen className="w-5 h-5 mr-2" />
+                SALIDA DE EMERGENCIA
+              </div>
             </div>
-            <div className="text-center mt-2 text-sm text-gray-600 font-semibold">
-              🚪 TRASERA • SALIDA PRINCIPAL
+            <div className="text-center mt-2 text-sm text-gray-600 font-semibold flex items-center justify-center">
+              <FaDoorOpen className="w-4 h-4 mr-2" />
+              TRASERA • SALIDA PRINCIPAL
             </div>
           </div>
         </div>
@@ -441,6 +468,7 @@ export default function BusSeatMap({
         <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
             <div className={`w-6 h-6 rounded mr-3 ${getSeatColor(selectedSeat.status).split(' ')[0]} border-2`}></div>
+            <FaMapMarkerAlt className="w-5 h-5 mr-2 text-blue-600" />
             Información del Asiento Seleccionado
           </h3>
           
@@ -482,7 +510,10 @@ export default function BusSeatMap({
           {/* Información de reserva si existe */}
           {reservationData && (
             <div className="mt-6 p-4 bg-white rounded-lg border border-green-200">
-              <h4 className="font-semibold text-green-800 mb-2">Información del Pasajero</h4>
+              <h4 className="font-semibold text-green-800 mb-2 flex items-center">
+                <FaUser className="w-4 h-4 mr-2" />
+                Información del Pasajero
+              </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <div className="text-sm text-gray-500">Nombre Completo</div>
@@ -499,7 +530,10 @@ export default function BusSeatMap({
           {/* Detalles adicionales para admin */}
           {isAdmin && seatDetails && (
             <div className="mt-6 p-4 bg-white rounded-lg border border-yellow-200">
-              <h4 className="font-semibold text-yellow-800 mb-2">Historial de Reserva</h4>
+              <h4 className="font-semibold text-yellow-800 mb-2 flex items-center">
+                <FaInfoCircle className="w-4 h-4 mr-2" />
+                Historial de Reserva
+              </h4>
               <div className="text-sm">
                 <div className="grid grid-cols-2 gap-2">
                   <div className="text-gray-500">Última reserva:</div>
@@ -513,7 +547,10 @@ export default function BusSeatMap({
 
           {/* Instrucciones según el estado */}
           <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
-            <h4 className="font-semibold text-blue-800 mb-2">Instrucciones</h4>
+            <h4 className="font-semibold text-blue-800 mb-2 flex items-center">
+              <FaInfoCircle className="w-4 h-4 mr-2" />
+              Instrucciones
+            </h4>
             {selectedSeat.status === 'available' ? (
               <p className="text-blue-700">
                 Este asiento está disponible para reserva. Complete el formulario y haga clic en "Confirmar Reserva".
@@ -538,9 +575,18 @@ export default function BusSeatMap({
       {/* Información adicional */}
       <div className="mt-8 pt-6 border-t border-gray-200">
         <div className="text-center text-sm text-gray-500">
-          <p>💺 <strong>Consejo:</strong> Los asientos cerca de las ventanas ofrecen mejor vista</p>
-          <p className="mt-1">🚶 Los asientos de pasillo permiten mayor movilidad</p>
-          <p className="mt-1">👥 Para grupos, reserve asientos en la misma fila o filas contiguas</p>
+          <p className="flex items-center justify-center">
+            <FaChair className="w-4 h-4 mr-2" />
+            <strong>Consejo:</strong> Los asientos cerca de las ventanas ofrecen mejor vista
+          </p>
+          <p className="mt-1 flex items-center justify-center">
+            <FaDoorOpen className="w-4 h-4 mr-2" />
+            Los asientos de pasillo permiten mayor movilidad
+          </p>
+          <p className="mt-1 flex items-center justify-center">
+            <FaUser className="w-4 h-4 mr-2" />
+            Para grupos, reserve asientos en la misma fila o filas contiguas
+          </p>
         </div>
       </div>
     </div>
