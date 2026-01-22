@@ -35,11 +35,15 @@ interface BusSeatMapProps {
   selectedSeat?: Seat | null
   reservationData?: ReservationData
   showDetails?: boolean
+  userRole?: string
+  busSize?: number
 }
 
 export default function BusSeatMap({ 
   onSeatSelect, 
-  isAdmin = false, 
+  isAdmin = false,
+  userRole, 
+  busSize = 40,
   selectedSeat, 
   reservationData,
   showDetails = false 
